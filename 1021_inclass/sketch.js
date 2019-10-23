@@ -13,6 +13,8 @@ let weatherapi = 'http://api.openweathermap.org/data/2.5/weather?q=';
 let weatherlink;
 let weatherdata;
 
+let img;
+
 //global variable, because input should be use several times,
 //if it is only use in one function, it could be local.
 let input;
@@ -20,7 +22,9 @@ let input;
 
 function setup(){
 
-    createCanvas(400,400);
+    createCanvas(windowWidth,windowHeight);
+    background(255,200,30);
+
 
     console.log('It is working!');
     // gotData is a callback function
@@ -29,8 +33,8 @@ function setup(){
     input = createInput('manhattan');
     let button = createButton('search weather');
 
-    input.position(200,300);
-    button.position(400,300);
+    input.position(width/2-100,100);
+    button.position(width/2+50,100);
 
     //event is button pressed
 
@@ -39,7 +43,7 @@ function setup(){
 }
 
 function updateCity(){
-    background(255);
+    background(255,200,30);
     console.log(input.value());
     //what the user input would be the city to call api
     city = input.value();
@@ -47,30 +51,39 @@ function updateCity(){
 
     weatherlink = weatherapi + city + weatherKey ;
     loadJSON(weatherlink, gotWeatherData);
+
     
 }
 
 function gotWeatherData(data){
     weatherdata = data.weather[0].description;
-    text(weatherdata, 20, 80);
-    text(city + ' is ' + weatherdata, 30, 20);
+
+    
+    textSize(30);
+    text(city + ' is in ' + weatherdata, width/2-150, 60);
+    
 
 
-    giphysearch = weatherdata;
+    giphysearch = weatherdata + ' weather';
     console.log(giphysearch);
 
-    giphyLink = giphyapi + giphySearch + giphyLimit;
+    giphyLink = giphyapi + giphysearch + giphyLimit;
 
     loadJSON(giphyLink, gotGiphyData);
+
+    img.remove();
+    
 
 }
 
 function gotGiphyData(data){
 
-    console.log(data.data[0].images.original.url);
+    // console.log(data.data[0].images.original.url);
 
-   let img = createImg(data.data[0].images.original.url);
-   img.position(500,0);
+
+   img = createImg(data.data[1].images.original.url);
+
+   img.position(width/2-250,150);
 
 
 }
